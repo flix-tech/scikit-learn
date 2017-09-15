@@ -72,11 +72,20 @@ except ImportError:
     pass
 
 from numpy.testing import assert_almost_equal
-from numpy.testing import assert_array_equal
+from numpy.testing import assert_array_equal as aae
 from numpy.testing import assert_array_almost_equal
 from numpy.testing import assert_array_less
 from numpy.testing import assert_approx_equal
 import numpy as np
+import inspect
+
+def assert_array_equal(*args, **kwargs):
+    if not isinstance(args[0], np.ndarray) or not isinstance(args[1], np.ndarray):
+        return aae(*args, **kwargs)
+    if issubclass(args[0].dtype.type, np.float) or issubclass(args[1].dtype.type, np.float):
+        fi = inspect.getframeinfo(inspect.currentframe().f_back)
+        print("*** {fn}:{ln}".format(fn=fi.filename, ln=fi.lineno))
+    return aae(*args, **kwargs)
 
 from sklearn.base import (ClassifierMixin, RegressorMixin, TransformerMixin,
                           ClusterMixin)
