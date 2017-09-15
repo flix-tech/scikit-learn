@@ -82,7 +82,7 @@ import inspect
 def assert_array_equal(*args, **kwargs):
     if not isinstance(args[0], np.ndarray) or not isinstance(args[1], np.ndarray):
         return aae(*args, **kwargs)
-    if issubclass(args[0].dtype.type, np.float) or issubclass(args[1].dtype.type, np.float):
+    if args[0].dtype.kind == 'f' or args[1].dtype.kind == 'f':
         fi = inspect.getframeinfo(inspect.currentframe().f_back)
         print("*** {fn}:{ln}".format(fn=fi.filename, ln=fi.lineno))
     return aae(*args, **kwargs)
